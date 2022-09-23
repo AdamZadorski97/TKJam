@@ -35,7 +35,7 @@ public class CharacterController : MonoBehaviour
 
     private bool isInSpecialActionTriggerE;
     private bool isInSpecialActionTriggerQ;
-    private UnityAction specialAction; 
+    private UnityAction specialAction;
     private void Movement()
     {
         transform.position += transform.forward * Time.deltaTime * movementSpeed;
@@ -82,6 +82,7 @@ public class CharacterController : MonoBehaviour
             {
                 moveSequence.Kill();
             }
+            moveSequence = DOTween.Sequence();
             moveSequence.Append(playerCharacter.DOLocalMoveX(leftPosition, moveTime).SetEase(moveCurve)).OnComplete(() => moveSequence.Kill());
             currentTrack = 0;
             return;
@@ -93,6 +94,7 @@ public class CharacterController : MonoBehaviour
             {
                 moveSequence.Kill();
             }
+            moveSequence = DOTween.Sequence();
             moveSequence.Append(playerCharacter.DOLocalMoveX(middlePosition, moveTime).SetEase(moveCurve)).OnComplete(() => moveSequence.Kill());
             currentTrack = 1;
             return;
@@ -107,6 +109,7 @@ public class CharacterController : MonoBehaviour
             {
                 moveSequence.Kill();
             }
+            moveSequence = DOTween.Sequence();
             moveSequence.Append(playerCharacter.DOLocalMoveX(middlePosition, moveTime).SetEase(moveCurve)).OnComplete(() => moveSequence.Kill());
             currentTrack = 1;
             return;
@@ -119,6 +122,7 @@ public class CharacterController : MonoBehaviour
             {
                 moveSequence.Kill();
             }
+            moveSequence = DOTween.Sequence();
             moveSequence.Append(playerCharacter.DOLocalMoveX(rightPosition, moveTime).SetEase(moveCurve)).OnComplete(() => moveSequence.Kill());
             currentTrack = 2;
             return;
@@ -133,7 +137,7 @@ public class CharacterController : MonoBehaviour
         {
             specialAction.Invoke();
         }
-         
+
     }
 
     private void OnEPressed()
@@ -143,60 +147,62 @@ public class CharacterController : MonoBehaviour
             specialAction.Invoke();
         }
     }
-    
+
     private void OnSpacePressed()
     {
-        if (moveSequence != null)
+        if (jumpSequence != null)
         {
-            moveSequence.Kill();
+            jumpSequence.Kill();
         }
-        jumpSequence.Append(playerCharacter.DOLocalMoveY(jumpHigh, moveTime).SetEase(jumpUpCurve));
-        jumpSequence.Append(playerCharacter.DOLocalMoveY(0, jumpTime).SetEase(jumpDownCurve)).OnComplete(()=> jumpSequence.Kill());
+            jumpSequence = DOTween.Sequence();
+            jumpSequence.Append(playerCharacter.DOLocalMoveY(jumpHigh, jumpTime).SetEase(jumpUpCurve));
+            jumpSequence.Append(playerCharacter.DOLocalMoveY(0, jumpTime).SetEase(jumpDownCurve));
+        
     }
 
-    private void OnObstacleEnter()
-    {
-        OnObstacleEnterEvent.Invoke();
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.GetComponent<TriggerAction>())
+        private void OnObstacleEnter()
         {
-            if(other.GetComponent<TriggerAction>().actionType == "E")
-            {
-                OnOTriggerEnterEEvent.Invoke();
-                isInSpecialActionTriggerE = true;
-            }
-
-            if(other.GetComponent<TriggerAction>().actionType == "Q")
-            {
-                OnOTriggerEnterQEvent.Invoke();
-                isInSpecialActionTriggerQ = true;
-            }
+            OnObstacleEnterEvent.Invoke();
         }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<TriggerAction>())
+        private void OnTriggerEnter(Collider other)
         {
-            if (other.GetComponent<TriggerAction>().actionType == "E")
+            if (other.GetComponent<TriggerAction>())
             {
-                isInSpecialActionTriggerE = false;
-                OnOTriggerExitEEvent.Invoke();
-            }
+                if (other.GetComponent<TriggerAction>().actionType == "E")
+                {
+                    OnOTriggerEnterEEvent.Invoke();
+                    isInSpecialActionTriggerE = true;
+                }
 
-            if (other.GetComponent<TriggerAction>().actionType == "Q")
-            {
-                isInSpecialActionTriggerQ = false;
-                OnOTriggerExitQEvent.Invoke();
+                if (other.GetComponent<TriggerAction>().actionType == "Q")
+                {
+                    OnOTriggerEnterQEvent.Invoke();
+                    isInSpecialActionTriggerQ = true;
+                }
             }
         }
 
-        if(other.GetComponent<TriggerObstacle>())
+        private void OnTriggerExit(Collider other)
         {
-            OnObstacleEnter();
+            if (other.GetComponent<TriggerAction>())
+            {
+                if (other.GetComponent<TriggerAction>().actionType == "E")
+                {
+                    isInSpecialActionTriggerE = false;
+                    OnOTriggerExitEEvent.Invoke();
+                }
+
+                if (other.GetComponent<TriggerAction>().actionType == "Q")
+                {
+                    isInSpecialActionTriggerQ = false;
+                    OnOTriggerExitQEvent.Invoke();
+                }
+            }
+
+            if (other.GetComponent<TriggerObstacle>())
+            {
+                OnObstacleEnter();
+            }
         }
     }
-}
