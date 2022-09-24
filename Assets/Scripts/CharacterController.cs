@@ -6,6 +6,8 @@ using DG.Tweening;
 
 public class CharacterController : MonoBehaviour
 {
+    public TriggerLine triggerLine;
+    public Animator characterAnimator;
     [SerializeField] private UnityEvent APressed;
     [SerializeField] private UnityEvent DPressed;
     [SerializeField] private UnityEvent QPressed;
@@ -142,7 +144,7 @@ public class CharacterController : MonoBehaviour
     {
         if (isInSpecialActionTriggerQ)
         {
-            specialAction.Invoke();
+            
         }
 
     }
@@ -151,7 +153,16 @@ public class CharacterController : MonoBehaviour
     {
         if (isInSpecialActionTriggerE)
         {
-            specialAction.Invoke();
+            Transform playerParrent = playerCharacter.parent;
+            canMove = false;
+            Sequence lineSequence = DOTween.Sequence();
+            lineSequence.Append(playerCharacter.transform.DOJump(triggerLine.characterPivot.position, 1, 1, 1));
+            lineSequence.AppendCallback(() => playerCharacter.SetParent(triggerLine.characterPivot));
+            lineSequence.Append(triggerLine.linePivot.DOLocalRotate(new Vector3(-35, 0, 0), 1));
+            lineSequence.Append(playerCharacter.transform.DOJump(triggerLine.endPoint.position, 1, 1, 1));
+            lineSequence.AppendCallback(() => playerCharacter.SetParent(playerParrent));
+            lineSequence.Join(playerCharacter.DOLocalRotate(Vector3.zero, 0.1f));
+            lineSequence.AppendCallback(() => canMove = true);
         }
     }
 
@@ -163,14 +174,28 @@ public class CharacterController : MonoBehaviour
         {
             jumpSequence.Kill();
         }
+        characterAnimator.ResetTrigger("EndJump");
+        characterAnimator.SetTrigger("Jump");
         jumpSequence = DOTween.Sequence();
         jumpSequence.AppendCallback(() => isInJumpState = true);
+        jumpSequence.AppendCallback(() => Salto());
         jumpSequence.Append(playerCharacter.DOLocalMoveY(jumpHigh, jumpTime).SetEase(jumpUpCurve));
+        jumpSequence.AppendCallback(() => characterAnimator.SetTrigger("EndJump"));
         jumpSequence.Append(playerCharacter.DOLocalMoveY(0.25f, jumpTime).SetEase(jumpDownCurve));
         jumpSequence.AppendCallback(() => isInJumpState = false);
-
-
     }
+    public float saltoInterval = 0.20f;
+    public float saltoTime;
+    public AnimationCurve saltoCurve;
+
+    public Sequence saltoSequence;
+    public void Salto()
+    {
+        saltoSequence = DOTween.Sequence();
+        saltoSequence.AppendInterval(saltoInterval);
+        saltoSequence.Append( playerCharacter.GetChild(0).DOLocalRotate(new Vector3(360, 0, 0), saltoTime, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear));
+    }
+
 
     public void OnObstacleEnter()
     {

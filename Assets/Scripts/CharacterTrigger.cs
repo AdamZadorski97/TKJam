@@ -10,6 +10,19 @@ public class CharacterTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.GetComponent<TriggerLine>())
+        {
+            characterController.OnOTriggerEnterEEvent.Invoke();
+            characterController.isInSpecialActionTriggerE = true;
+            characterController.triggerLine = other.GetComponent<TriggerLine>();
+
+        }
+
+
+
+
+
+
         if (other.GetComponent<TriggerAction>())
         {
             if (other.GetComponent<TriggerAction>().actionType == "E")

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 public class GameMachineSmallScreenController : MonoBehaviour
 {
     [SerializeField] private TMP_Text screenText;
@@ -48,6 +49,14 @@ public class GameMachineSmallScreenController : MonoBehaviour
         screenText.text = message;
     }
 
+    IEnumerator  SetReset()
+    {
+        yield return new WaitForSeconds(3);
+        ShowMessage("Press B", 2, false);
+        yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.E));
+        Application.LoadLevel(0);
+    }
+
     public void ShowMessage(string message, float time, bool canUpdateTimeAfter, bool showHP= false)
     {
         if(messageSequence!=null)
@@ -65,8 +74,9 @@ public class GameMachineSmallScreenController : MonoBehaviour
             }
             else
             {
-                ShowMessage("Game Over", 100, false);
+                ShowMessage("Game Over", 2, false);
                 characterController.canMove = false;
+                StartCoroutine(SetReset());
             }
         }
        
