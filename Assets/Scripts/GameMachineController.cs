@@ -42,7 +42,7 @@ public class GameMachineController : MonoBehaviour
     [SerializeField] private Light spaceLight;
     [SerializeField] private float LightOnIntensity = 0.01f;
 
-    
+
     private Sequence aButtonSequence;
     private Sequence bButtonSequence;
     private Sequence jumpButtonSequence;
@@ -69,8 +69,8 @@ public class GameMachineController : MonoBehaviour
     private void Start()
     {
         StartTimeline();
-      
-        
+
+
         StartCoroutine(SplashScreen());
         buttonsMaterial.EnableKeyword("_EMISSION");
         joyStickDefaultRotation = joyStick.localEulerAngles;
@@ -92,7 +92,7 @@ public class GameMachineController : MonoBehaviour
         timelineSequence.AppendInterval(2);
         timelineSequence.Append(gameMachineCamera.DOLocalMove(targetCameraPosition, targetCameraPositionTime).SetEase(targetCameraPositionCurve));
         timelineSequence.AppendInterval(1);
-        timelineSequence.AppendCallback(()=> machineSmallScreenController.ShowMessage("Welcome!", 2, false));
+        timelineSequence.AppendCallback(() => machineSmallScreenController.ShowMessage("Welcome!", 2, false));
         timelineSequence.AppendInterval(2.5f);
         timelineSequence.Append(splashScreen.DOColor(splashScreenTargetColor, splashScreenTargetColorTime).SetEase(splashScreenTargetColorCurve));
         timelineSequence.AppendCallback(() => machineSmallScreenController.ShowMessage("Press Jump", 2, false));
@@ -113,7 +113,10 @@ public class GameMachineController : MonoBehaviour
     {
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
         machineSmallScreenController.ShowMessage("Start !", 1, true);
-  
+        if (timelineSequence != null)
+        {
+            timelineSequence.Kill();
+        }
         splashScreen.DOFade(0, 1);
         characterController.canMove = true;
     }
@@ -121,7 +124,7 @@ public class GameMachineController : MonoBehaviour
 
     private void Update()
     {
-      
+
 
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -223,7 +226,7 @@ public class GameMachineController : MonoBehaviour
         jumpButtonSequence.Join(spaceLight.DOIntensity(0.00f, buttonPressTime * 2).SetEase(buttonPressCurve));
         jumpButtonSequence.Join(jumpButton.GetComponent<MeshRenderer>().materials[0].DOColor(EmissionLow, "_EmissionColor", buttonPressTime * 2).SetEase(buttonPressCurve)).OnComplete(() =>
         {
-            bButtonSequence.Kill(); 
+            bButtonSequence.Kill();
         });
     }
 }

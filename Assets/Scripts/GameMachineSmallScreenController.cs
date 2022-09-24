@@ -71,6 +71,7 @@ public class GameMachineSmallScreenController : MonoBehaviour
             }
             else
             {
+                characterController.characterAnimator.SetTrigger("Jump");
                 ShowMessage("Game Over", 2, false);
                 characterController.canMove = false;
                 StartCoroutine(SetReset());

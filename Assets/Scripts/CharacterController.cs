@@ -80,6 +80,24 @@ public class CharacterController : MonoBehaviour
             }
         }
     }
+    public Sequence turnSequence;
+    public void TurnLeft()
+    {
+        if (turnSequence != null) turnSequence.Kill();
+
+        turnSequence = DOTween.Sequence();
+        turnSequence.Append(playerCharacter.GetChild(0).DOLocalRotate(new Vector3(0, 20, 0), 0.35f));
+        turnSequence.Append(playerCharacter.GetChild(0).DOLocalRotate(new Vector3(0, 0, 0), 0.35f));
+    }
+
+    public void TurnRight()
+    {
+        if (turnSequence != null) turnSequence.Kill();
+
+        turnSequence = DOTween.Sequence();
+        turnSequence.Append(playerCharacter.GetChild(0).DOLocalRotate(new Vector3(0, -20, 0), 0.35f));
+        turnSequence.Append(playerCharacter.GetChild(0).DOLocalRotate(new Vector3(0, 0, 0), 0.35f));
+    }
 
     private void OnMoveLeft()
     {
@@ -91,8 +109,10 @@ public class CharacterController : MonoBehaviour
             {
                 moveSequence.Kill();
             }
+            TurnLeft();
             moveSequence = DOTween.Sequence();
             moveSequence.Append(playerCharacter.DOLocalMoveX(leftPosition, moveTime).SetEase(moveCurve)).OnComplete(() => moveSequence.Kill());
+           
             currentTrack = 0;
             return;
         }
@@ -103,6 +123,7 @@ public class CharacterController : MonoBehaviour
             {
                 moveSequence.Kill();
             }
+            TurnLeft();
             moveSequence = DOTween.Sequence();
             moveSequence.Append(playerCharacter.DOLocalMoveX(middlePosition, moveTime).SetEase(moveCurve)).OnComplete(() => moveSequence.Kill());
             currentTrack = 1;
@@ -118,6 +139,7 @@ public class CharacterController : MonoBehaviour
             {
                 moveSequence.Kill();
             }
+            TurnRight();
             moveSequence = DOTween.Sequence();
             moveSequence.Append(playerCharacter.DOLocalMoveX(middlePosition, moveTime).SetEase(moveCurve)).OnComplete(() => moveSequence.Kill());
             currentTrack = 1;
@@ -131,6 +153,7 @@ public class CharacterController : MonoBehaviour
             {
                 moveSequence.Kill();
             }
+            TurnRight();
             moveSequence = DOTween.Sequence();
             moveSequence.Append(playerCharacter.DOLocalMoveX(rightPosition, moveTime).SetEase(moveCurve)).OnComplete(() => moveSequence.Kill());
             currentTrack = 2;
@@ -153,17 +176,21 @@ public class CharacterController : MonoBehaviour
     {
         if (isInSpecialActionTriggerE)
         {
-            Transform playerParrent = playerCharacter.parent;
-            canMove = false;
-            Sequence lineSequence = DOTween.Sequence();
-            lineSequence.Append(playerCharacter.transform.DOJump(triggerLine.characterPivot.position, 1, 1, 1));
-            lineSequence.AppendCallback(() => playerCharacter.SetParent(triggerLine.characterPivot));
-            lineSequence.Append(triggerLine.linePivot.DOLocalRotate(new Vector3(-35, 0, 0), 1));
-            lineSequence.Append(playerCharacter.transform.DOJump(triggerLine.endPoint.position, 1, 1, 1));
-            lineSequence.AppendCallback(() => playerCharacter.SetParent(playerParrent));
-            lineSequence.Join(playerCharacter.DOLocalRotate(Vector3.zero, 0.1f));
-            lineSequence.AppendCallback(() => canMove = true);
-            lineSequence.AppendCallback(() => triggerLine = null);
+            isInSpecialActionTriggerE = false;
+            if (triggerLine != null)
+            {
+                Transform playerParrent = playerCharacter.parent;
+                canMove = false;
+                Sequence lineSequence = DOTween.Sequence();
+                lineSequence.Append(playerCharacter.transform.DOJump(triggerLine.characterPivot.position, 1, 1, 1));
+                lineSequence.AppendCallback(() => playerCharacter.SetParent(triggerLine.characterPivot));
+                lineSequence.Append(triggerLine.linePivot.DOLocalRotate(new Vector3(-35, 0, 0), 1));
+                lineSequence.Append(playerCharacter.transform.DOJump(triggerLine.endPoint.position, 1, 1, 1));
+                lineSequence.AppendCallback(() => playerCharacter.SetParent(playerParrent));
+                lineSequence.Join(playerCharacter.DOLocalRotate(Vector3.zero, 0.1f));
+                lineSequence.AppendCallback(() => canMove = true);
+                lineSequence.AppendCallback(() => triggerLine = null);
+            }
         }
     }
 
