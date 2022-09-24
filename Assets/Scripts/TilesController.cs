@@ -16,17 +16,19 @@ public class TilesController : MonoBehaviour
 
     public Transform playerTransform;
 
+    private float tempPosition;
+    
     private void Start()
     {
         for (int i = 0; i < tilesAmount; i++)
         {
-            if (i == 0)
+            if (i <= 1)
             {
                 SpawnTile(0);
             }
             else
             {
-                SpawnTile(Random.Range(0, tilesPrefabs.Length));
+                SpawnTile(Random.Range(2, tilesPrefabs.Length));
             }
         }
     }
@@ -35,11 +37,9 @@ public class TilesController : MonoBehaviour
     {
         if (playerTransform.position.z > zSpawn - (tilesAmount * tileLength))
         {
-            SpawnTile(Random.Range(0, tilesPrefabs.Length));
+            SpawnTile(Random.Range(2, tilesPrefabs.Length));
         }
     }
-
-    private float tempPosition;
 
     public void SpawnTile(int tileIndex)
     {

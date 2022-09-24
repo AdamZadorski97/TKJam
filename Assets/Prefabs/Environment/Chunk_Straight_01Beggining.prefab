@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8065826220933622558}
   - component: {fileID: 1045234066846517256}
   m_Layer: 0
-  m_Name: Chunk_Straight_01
+  m_Name: Chunk_Straight_01Beggining
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2902418587313777875}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 483e18c4faa92584eb48452f4102b63d, type: 3}
   m_Name: 
@@ -141,6 +141,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ObstacleLocalisation0 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5618340247097601934, guid: 306be3a85a0450e4f86ceda9c3d33f29,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8264112101503674254, guid: 306be3a85a0450e4f86ceda9c3d33f29,
         type: 3}
@@ -223,6 +228,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ObstacleLocalisation0 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2395442650434344936, guid: 3b193226a56b2dd43a8d782c5ff7ea54,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7381929937421913540, guid: 3b193226a56b2dd43a8d782c5ff7ea54,
         type: 3}
       propertyPath: m_RootOrder
@@ -304,6 +314,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ObstacleLocalisation0 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 62987943511350622, guid: ce09d5a3612fd3d4084fdbbbebd96013,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3140709636148093217, guid: ce09d5a3612fd3d4084fdbbbebd96013,
         type: 3}
       propertyPath: m_RootOrder
@@ -384,6 +399,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ObstacleLocalisation0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1622147381303074305, guid: 5c984895d6ebfd140ae51f81454c7cee,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8874019405967458545, guid: 5c984895d6ebfd140ae51f81454c7cee,
         type: 3}
