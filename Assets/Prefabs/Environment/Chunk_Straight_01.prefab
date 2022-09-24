@@ -137,6 +137,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8065826220933622545}
     m_Modifications:
+    - target: {fileID: 268875488430734462, guid: 306be3a85a0450e4f86ceda9c3d33f29,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5618340247097601934, guid: 306be3a85a0450e4f86ceda9c3d33f29,
         type: 3}
       propertyPath: m_Name
@@ -222,6 +227,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ObstacleLocalisation0 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3942674763174396815, guid: 3b193226a56b2dd43a8d782c5ff7ea54,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7381929937421913540, guid: 3b193226a56b2dd43a8d782c5ff7ea54,
         type: 3}
@@ -359,6 +369,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8456264068359048844, guid: ce09d5a3612fd3d4084fdbbbebd96013,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ce09d5a3612fd3d4084fdbbbebd96013, type: 3}
 --- !u!4 &1931625671321400679 stripped
@@ -384,6 +399,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ObstacleLocalisation0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4568203254303375183, guid: 5c984895d6ebfd140ae51f81454c7cee,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8874019405967458545, guid: 5c984895d6ebfd140ae51f81454c7cee,
         type: 3}
