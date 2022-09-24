@@ -163,6 +163,7 @@ public class CharacterController : MonoBehaviour
             lineSequence.AppendCallback(() => playerCharacter.SetParent(playerParrent));
             lineSequence.Join(playerCharacter.DOLocalRotate(Vector3.zero, 0.1f));
             lineSequence.AppendCallback(() => canMove = true);
+            lineSequence.AppendCallback(() => triggerLine = null);
         }
     }
 

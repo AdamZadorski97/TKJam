@@ -20,7 +20,6 @@ public class GameMachineSmallScreenController : MonoBehaviour
     public List<GameObject> hpIcons;
     private void Start()
     {
-        ShowMessage("Press Jump!", 3, false);
         BlinkEffect();
     }
 
@@ -51,8 +50,6 @@ public class GameMachineSmallScreenController : MonoBehaviour
 
     IEnumerator  SetReset()
     {
-        yield return new WaitForSeconds(3);
-        ShowMessage("Press B", 2, false);
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.E));
         Application.LoadLevel(0);
     }
