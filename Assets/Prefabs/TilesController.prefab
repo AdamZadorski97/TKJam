@@ -45,11 +45,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilesPrefabs:
+  - {fileID: 2902418587313777875, guid: 2748f387d892ffa43916120fdf7df844, type: 3}
+  - {fileID: 4081668892678801791, guid: d507290a726417e46b0e61693f184b4c, type: 3}
   - {fileID: 2902418587313777875, guid: e2b3c638393b900479cdb8ae8386d3e3, type: 3}
   - {fileID: 1678559151454849211, guid: 077c1b4f5ecca3541b24994ce9778898, type: 3}
-  - {fileID: 4081668892678801791, guid: d507290a726417e46b0e61693f184b4c, type: 3}
   - {fileID: 8655585603368057282, guid: 72b39e64027917c4a9158cd9a4d7df06, type: 3}
   zSpawn: 0
   tileLength: 20
-  tilesAmount: 5
+  tilesAmount: 50
   playerTransform: {fileID: 0}
