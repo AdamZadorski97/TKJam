@@ -128,6 +128,7 @@ MonoBehaviour:
   - {fileID: 1119512024274108011, guid: 2d9d99c655fd89d4ba8c12fe2726af40, type: 3}
   - {fileID: 4135935330024340598, guid: 545b623481507ab43acd7e4701e53dbb, type: 3}
   - {fileID: 4827099377679913546, guid: b637dd25ea86af54db182c1d4d514e18, type: 3}
+  - {fileID: 7016526685454692765, guid: 8070a73367d6a7149a2ddd07a4edefd5, type: 3}
   bannana: {fileID: 894217302855541839, guid: 60089ca1d3360804189ad668376baaa4, type: 3}
   spawningRate: {x: 0, y: 0}
   xSpawnPosition: {x: 0, y: 0}
