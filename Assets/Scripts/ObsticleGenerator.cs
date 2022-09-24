@@ -8,8 +8,10 @@ using Random = UnityEngine.Random;
 public class ObsticleGenerator : MonoBehaviour
 {
     [SerializeField] private List<GameObject> tileObsticlesLocalisations;
+    [SerializeField] private List<GameObject> tileBananasLocalisations;
     [SerializeField] private List<GameObject> avilableTileObsticles;
-    [SerializeField] private GameObject obsticle;
+    
+    [SerializeField] private GameObject bannana;
 
     [SerializeField] private Vector2 spawningRate;
     [SerializeField] private Vector2 xSpawnPosition;
@@ -27,8 +29,14 @@ public class ObsticleGenerator : MonoBehaviour
         {
            GameObject newObstacle = Instantiate(avilableTileObsticles[Random.Range(0, avilableTileObsticles.Count)]);
            newObstacle.transform.position = tileObsticlesLocalisations[i].transform.position;
-
-           //tileObsticles[i].transform.position = 
+           
+        }
+        for (int i = 0; i < tileBananasLocalisations.Count; i++)
+        {
+           
+            GameObject newBannana = Instantiate(bannana);
+            newBannana.transform.position = tileBananasLocalisations[i].transform.position;
+            
         }
         
     }
