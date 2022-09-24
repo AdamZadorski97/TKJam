@@ -28,7 +28,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private AnimationCurve moveCurve;
     [SerializeField] private int currentTrack;
     private Sequence moveSequence;
-
+    private bool isInJumpState;
     [SerializeField] private AnimationCurve jumpUpCurve;
     [SerializeField] private AnimationCurve jumpDownCurve;
     private Sequence jumpSequence;
@@ -36,6 +36,8 @@ public class CharacterController : MonoBehaviour
     private bool isInSpecialActionTriggerE;
     private bool isInSpecialActionTriggerQ;
     private UnityAction specialAction;
+    public bool canMove;
+    public GameMachineSmallScreenController gameMachineSmallScreenController;
     private void Movement()
     {
         transform.position += transform.forward * Time.deltaTime * movementSpeed;
@@ -43,32 +45,35 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
-        Movement();
+        if (canMove)
+        {
+            Movement();
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            APressed.Invoke();
-            OnMoveLeft();
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            DPressed.Invoke();
-            OnMoveRight();
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            QPressed.Invoke();
-            OnQPressed();
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            EPressed.Invoke();
-            OnEPressed();
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpacePressed.Invoke();
-            OnSpacePressed();
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                APressed.Invoke();
+                OnMoveLeft();
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                DPressed.Invoke();
+                OnMoveRight();
+            }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                QPressed.Invoke();
+                OnQPressed();
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                EPressed.Invoke();
+                OnEPressed();
+            }
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SpacePressed.Invoke();
+                OnSpacePressed();
+            }
         }
     }
 
@@ -150,59 +155,65 @@ public class CharacterController : MonoBehaviour
 
     private void OnSpacePressed()
     {
+        if (isInJumpState)
+            return;
         if (jumpSequence != null)
         {
             jumpSequence.Kill();
         }
-            jumpSequence = DOTween.Sequence();
-            jumpSequence.Append(playerCharacter.DOLocalMoveY(jumpHigh, jumpTime).SetEase(jumpUpCurve));
-            jumpSequence.Append(playerCharacter.DOLocalMoveY(0, jumpTime).SetEase(jumpDownCurve));
-        
+        jumpSequence = DOTween.Sequence();
+        jumpSequence.AppendCallback(() => isInJumpState = true);
+        jumpSequence.Append(playerCharacter.DOLocalMoveY(jumpHigh, jumpTime).SetEase(jumpUpCurve));
+        jumpSequence.Append(playerCharacter.DOLocalMoveY(0.25f, jumpTime).SetEase(jumpDownCurve));
+        jumpSequence.AppendCallback(() => isInJumpState = false);
+
+
     }
 
-        private void OnObstacleEnter()
-        {
-            OnObstacleEnterEvent.Invoke();
-        }
+    private void OnObstacleEnter()
+    {
+        OnObstacleEnterEvent.Invoke();
+    }
 
-        private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<TriggerAction>())
         {
-            if (other.GetComponent<TriggerAction>())
+            if (other.GetComponent<TriggerAction>().actionType == "E")
             {
-                if (other.GetComponent<TriggerAction>().actionType == "E")
-                {
-                    OnOTriggerEnterEEvent.Invoke();
-                    isInSpecialActionTriggerE = true;
-                }
-
-                if (other.GetComponent<TriggerAction>().actionType == "Q")
-                {
-                    OnOTriggerEnterQEvent.Invoke();
-                    isInSpecialActionTriggerQ = true;
-                }
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (other.GetComponent<TriggerAction>())
-            {
-                if (other.GetComponent<TriggerAction>().actionType == "E")
-                {
-                    isInSpecialActionTriggerE = false;
-                    OnOTriggerExitEEvent.Invoke();
-                }
-
-                if (other.GetComponent<TriggerAction>().actionType == "Q")
-                {
-                    isInSpecialActionTriggerQ = false;
-                    OnOTriggerExitQEvent.Invoke();
-                }
+                OnOTriggerEnterEEvent.Invoke();
+                isInSpecialActionTriggerE = true;
             }
 
-            if (other.GetComponent<TriggerObstacle>())
+            if (other.GetComponent<TriggerAction>().actionType == "Q")
             {
-                OnObstacleEnter();
+                OnOTriggerEnterQEvent.Invoke();
+                isInSpecialActionTriggerQ = true;
             }
         }
     }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponent<TriggerAction>())
+        {
+            if (other.GetComponent<TriggerAction>().actionType == "E")
+            {
+                isInSpecialActionTriggerE = false;
+                OnOTriggerExitEEvent.Invoke();
+            }
+
+            if (other.GetComponent<TriggerAction>().actionType == "Q")
+            {
+                isInSpecialActionTriggerQ = false;
+                OnOTriggerExitQEvent.Invoke();
+            }
+        }
+
+        if (other.GetComponent<TriggerObstacle>())
+        {
+            OnObstacleEnter();
+            gameMachineSmallScreenController.ShowMessage("Warning!", 2, true);
+        }
+    }
+}
