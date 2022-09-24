@@ -56,10 +56,12 @@ public class GameMachineController : MonoBehaviour
     [SerializeField] private Image splashScreen;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private GameMachineSmallScreenController machineSmallScreenController;
+    private Sequence blinkSequence;
+    [SerializeField] private float lightHighColor;
+    [SerializeField] private float lightLowColor;
 
-
-
-
+    [SerializeField] private float blinkTime;
+    [SerializeField] private AnimationCurve blinkCurve;
 
     private void Start()
     {
@@ -70,8 +72,16 @@ public class GameMachineController : MonoBehaviour
         aButtonDefaultPosition = aButton.localPosition;
         bButtonDefaultPosition = bButton.localPosition;
         jumpButtonDefaultPosition = jumpButton.localPosition;
+        BlinkEffect();
     }
-
+    public void BlinkEffect()
+    {
+        screenLight.intensity = lightLowColor;
+        blinkSequence = DOTween.Sequence();
+        blinkSequence.Append(screenLight.DOIntensity(lightHighColor, blinkTime).SetEase(blinkCurve));
+        blinkSequence.Append(screenLight.DOIntensity(lightLowColor, blinkTime).SetEase(blinkCurve));
+        blinkSequence.SetLoops(-1, LoopType.Restart);
+    }
     IEnumerator SplashScreen()
     {
         yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
