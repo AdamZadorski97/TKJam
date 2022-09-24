@@ -11,11 +11,11 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private UnityEvent QPressed;
     [SerializeField] private UnityEvent EPressed;
     [SerializeField] private UnityEvent SpacePressed;
-    [SerializeField] private UnityEvent OnObstacleEnterEvent;
-    [SerializeField] private UnityEvent OnOTriggerEnterQEvent;
-    [SerializeField] private UnityEvent OnOTriggerEnterEEvent;
-    [SerializeField] private UnityEvent OnOTriggerExitQEvent;
-    [SerializeField] private UnityEvent OnOTriggerExitEEvent;
+    [SerializeField] public UnityEvent OnObstacleEnterEvent;
+    [SerializeField] public UnityEvent OnOTriggerEnterQEvent;
+    [SerializeField] public UnityEvent OnOTriggerEnterEEvent;
+    [SerializeField] public UnityEvent OnOTriggerExitQEvent;
+    [SerializeField] public UnityEvent OnOTriggerExitEEvent;
     [SerializeField] private float movementSpeed;
 
     [SerializeField] private Transform playerCharacter;
@@ -33,11 +33,13 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private AnimationCurve jumpDownCurve;
     private Sequence jumpSequence;
 
-    private bool isInSpecialActionTriggerE;
-    private bool isInSpecialActionTriggerQ;
+    public bool isInSpecialActionTriggerE;
+    public bool isInSpecialActionTriggerQ;
     private UnityAction specialAction;
     public bool canMove;
     public GameMachineSmallScreenController gameMachineSmallScreenController;
+
+    public int hp;
     private void Movement()
     {
         transform.position += transform.forward * Time.deltaTime * movementSpeed;
@@ -170,50 +172,13 @@ public class CharacterController : MonoBehaviour
 
     }
 
-    private void OnObstacleEnter()
+    public void OnObstacleEnter()
     {
+        hp--;
+        gameMachineSmallScreenController.ShowMessage("", 2, true, true);
         OnObstacleEnterEvent.Invoke();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.GetComponent<TriggerAction>())
-        {
-            if (other.GetComponent<TriggerAction>().actionType == "E")
-            {
-                OnOTriggerEnterEEvent.Invoke();
-                isInSpecialActionTriggerE = true;
-            }
 
-            if (other.GetComponent<TriggerAction>().actionType == "Q")
-            {
-                OnOTriggerEnterQEvent.Invoke();
-                isInSpecialActionTriggerQ = true;
-            }
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.GetComponent<TriggerAction>())
-        {
-            if (other.GetComponent<TriggerAction>().actionType == "E")
-            {
-                isInSpecialActionTriggerE = false;
-                OnOTriggerExitEEvent.Invoke();
-            }
-
-            if (other.GetComponent<TriggerAction>().actionType == "Q")
-            {
-                isInSpecialActionTriggerQ = false;
-                OnOTriggerExitQEvent.Invoke();
-            }
-        }
-
-        if (other.GetComponent<TriggerObstacle>())
-        {
-            OnObstacleEnter();
-            gameMachineSmallScreenController.ShowMessage("Warning!", 2, true);
-        }
-    }
+ 
 }

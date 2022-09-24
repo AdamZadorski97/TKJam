@@ -12,10 +12,11 @@ public class GameMachineSmallScreenController : MonoBehaviour
     [SerializeField] private AnimationCurve blinkCurve;
     private Sequence blinkSequence;
     [SerializeField] private Transform playerPosition;
+    [SerializeField] private CharacterController characterController;
     public bool canUpdateScore = false;
     private Sequence messageSequence;
-
-
+    public GameObject HpPanel;
+    public List<GameObject> hpIcons;
     private void Start()
     {
         ShowMessage("Press Jump!", 3, false);
@@ -47,7 +48,7 @@ public class GameMachineSmallScreenController : MonoBehaviour
         screenText.text = message;
     }
 
-    public void ShowMessage(string message, float time, bool canUpdateTimeAfter)
+    public void ShowMessage(string message, float time, bool canUpdateTimeAfter, bool showHP= false)
     {
         if(messageSequence!=null)
         {
@@ -55,8 +56,50 @@ public class GameMachineSmallScreenController : MonoBehaviour
         }
         messageSequence = DOTween.Sequence();
         messageSequence.AppendCallback(() => canUpdateScore = false);
+        if (showHP)
+        {
+            if(characterController.hp>0)
+            {
+                HpPanel.SetActive(true);
+                hpImages();
+            }
+            else
+            {
+                ShowMessage("Game Over", 100, false);
+                characterController.canMove = false;
+            }
+        }
+       
+        else
+            HpPanel.SetActive(false);
         messageSequence.AppendCallback(() => WriteText(message));
         messageSequence.AppendInterval(time);
-        messageSequence.AppendCallback(() => canUpdateScore = canUpdateTimeAfter);
+        messageSequence.AppendCallback(() => 
+        { 
+            canUpdateScore = canUpdateTimeAfter;
+            HpPanel.SetActive(false);
+        });
+    }
+
+    private void hpImages()
+    {
+        if(characterController.hp == 3)
+        {
+            hpIcons[0].SetActive(true);
+            hpIcons[1].SetActive(true);
+            hpIcons[2].SetActive(true);
+        }
+        else if (characterController.hp == 2)
+        {
+            hpIcons[0].SetActive(true);
+            hpIcons[1].SetActive(false);
+            hpIcons[2].SetActive(true);
+        }
+        else if (characterController.hp == 1)
+        {
+            hpIcons[0].SetActive(false);
+            hpIcons[1].SetActive(true);
+            hpIcons[2].SetActive(false);
+        }
     }
 }
