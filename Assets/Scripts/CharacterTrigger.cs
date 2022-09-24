@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class CharacterTrigger : MonoBehaviour
 {
     public CharacterController characterController;
@@ -59,7 +59,10 @@ public class CharacterTrigger : MonoBehaviour
         if (other.GetComponent<TriggerObstacle>())
         {
             characterController.OnObstacleEnter();
-
+        }
+        if (other.GetComponent<TriggerBanana>())
+        {
+            other.transform.DOScale(Vector3.zero, 0.2f);
         }
     }
 }

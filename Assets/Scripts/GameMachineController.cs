@@ -62,10 +62,15 @@ public class GameMachineController : MonoBehaviour
 
     [SerializeField] private float blinkTime;
     [SerializeField] private AnimationCurve blinkCurve;
-
+    [SerializeField] private Color splashScreenTargetColor;
+    [SerializeField] private float splashScreenTargetColorTime = 1;
+    [SerializeField] private AnimationCurve splashScreenTargetColorCurve;
+    [SerializeField] private Transform gameMachineCamera;
     private void Start()
     {
-        splashScreen.gameObject.SetActive(true);
+        StartTimeline();
+      
+        
         StartCoroutine(SplashScreen());
         buttonsMaterial.EnableKeyword("_EMISSION");
         joyStickDefaultRotation = joyStick.localEulerAngles;
@@ -74,6 +79,28 @@ public class GameMachineController : MonoBehaviour
         jumpButtonDefaultPosition = jumpButton.localPosition;
         BlinkEffect();
     }
+    private Sequence timelineSequence;
+    public Vector3 targetCameraPosition;
+    public float targetCameraPositionTime;
+    public AnimationCurve targetCameraPositionCurve;
+    public void StartTimeline()
+    {
+        gameMachineCamera.transform.localPosition = new Vector3(0, 0, 3);
+        splashScreen.gameObject.SetActive(true);
+        splashScreen.color = Color.black;
+        timelineSequence = DOTween.Sequence();
+        timelineSequence.AppendInterval(2);
+        timelineSequence.Append(gameMachineCamera.DOLocalMove(targetCameraPosition, targetCameraPositionTime).SetEase(targetCameraPositionCurve));
+        timelineSequence.AppendInterval(1);
+        timelineSequence.AppendCallback(()=> machineSmallScreenController.ShowMessage("Welcome!", 2, false));
+        timelineSequence.AppendInterval(2.5f);
+        timelineSequence.Append(splashScreen.DOColor(splashScreenTargetColor, splashScreenTargetColorTime).SetEase(splashScreenTargetColorCurve));
+        timelineSequence.AppendCallback(() => machineSmallScreenController.ShowMessage("Press Jump", 2, false));
+        timelineSequence.AppendCallback(() => SplashScreen());
+    }
+
+
+
     public void BlinkEffect()
     {
         screenLight.intensity = lightLowColor;
