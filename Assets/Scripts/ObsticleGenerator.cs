@@ -8,8 +8,10 @@ using Random = UnityEngine.Random;
 public class ObsticleGenerator : MonoBehaviour
 {
     [SerializeField] private List<GameObject> tileObsticlesLocalisations;
+    [SerializeField] private List<GameObject> tileBackgroundElementsLocalisations;
     [SerializeField] private List<GameObject> tileBananasLocalisations;
     [SerializeField] private List<GameObject> avilableTileObsticles;
+    [SerializeField] private List<GameObject> avilableTileBackgroundElementsLocalisation;
     
     [SerializeField] private GameObject bannana;
 
