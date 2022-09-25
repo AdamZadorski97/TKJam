@@ -4,5 +4,10 @@ using UnityEngine;
 
 public class TriggerBanana : MonoBehaviour
 {
- 
+    public ParticleSystem particleSystemBanana;
+
+    public void SpawnParticles()
+    {
+        particleSystemBanana.Play();
+    }
 }

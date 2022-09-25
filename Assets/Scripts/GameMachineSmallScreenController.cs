@@ -18,6 +18,7 @@ public class GameMachineSmallScreenController : MonoBehaviour
     private Sequence messageSequence;
     public GameObject HpPanel;
     public List<GameObject> hpIcons;
+    public float points;
     private void Start()
     {
         BlinkEffect();
@@ -25,8 +26,15 @@ public class GameMachineSmallScreenController : MonoBehaviour
 
     public void Update()
     {
-        if(canUpdateScore)
-        WriteText(playerPosition.position.z.ToString("0"));
+        if(characterController.canMove)
+        points += Time.deltaTime * 3;
+
+        if (canUpdateScore)
+        { 
+            WriteText(points.ToString("0")); 
+        }
+           
+       
     }
 
 
