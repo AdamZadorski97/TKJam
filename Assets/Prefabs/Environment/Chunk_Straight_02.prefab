@@ -749,6 +749,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: backgroundElement0
       objectReference: {fileID: 0}
+    - target: {fileID: 3926630246376687176, guid: bb74f0726b296444085e6959bd8c6a26,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4410679673099787506, guid: bb74f0726b296444085e6959bd8c6a26,
         type: 3}
       propertyPath: m_RootOrder
