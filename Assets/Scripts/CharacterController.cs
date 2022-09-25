@@ -224,6 +224,12 @@ public class CharacterController : MonoBehaviour
         saltoSequence.Append( playerCharacter.GetChild(0).DOLocalRotate(new Vector3(360, 0, 0), saltoTime, RotateMode.FastBeyond360).SetRelative(true).SetEase(Ease.Linear));
     }
 
+    public void OnTriggerHole()
+    {
+        hp-=10;
+        gameMachineSmallScreenController.ShowMessage("", 2, true, true);
+        OnObstacleEnterEvent.Invoke();
+    }
 
     public void OnObstacleEnter()
     {

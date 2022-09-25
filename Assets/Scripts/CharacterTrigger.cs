@@ -61,6 +61,13 @@ public class CharacterTrigger : MonoBehaviour
             }
         }
 
+        if (other.GetComponent<TriggerHole>())
+        {
+            characterController.OnTriggerHole();
+            characterController.transform.DOLocalMoveY(-5, 1);
+        }
+
+
         if (other.GetComponent<TriggerObstacle>())
         {
             characterController.OnObstacleEnter();

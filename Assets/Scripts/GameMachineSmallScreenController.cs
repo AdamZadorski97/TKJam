@@ -19,6 +19,7 @@ public class GameMachineSmallScreenController : MonoBehaviour
     public GameObject HpPanel;
     public List<GameObject> hpIcons;
     public float points;
+    public GameMachineController gameMachineController;
     private void Start()
     {
         BlinkEffect();
@@ -81,6 +82,7 @@ public class GameMachineSmallScreenController : MonoBehaviour
             {
                 characterController.characterAnimator.SetTrigger("Jump");
                 ShowMessage("Game Over", 2, false);
+                gameMachineController.ranking.DOFade(1, 1);
                 characterController.canMove = false;
                 StartCoroutine(SetReset());
             }

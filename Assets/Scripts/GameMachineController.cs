@@ -66,6 +66,8 @@ public class GameMachineController : MonoBehaviour
     [SerializeField] private float splashScreenTargetColorTime = 1;
     [SerializeField] private AnimationCurve splashScreenTargetColorCurve;
     [SerializeField] private Transform gameMachineCamera;
+    [SerializeField] public CanvasGroup ranking;
+
     private void Start()
     {
         StartTimeline();
